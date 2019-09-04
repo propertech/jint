@@ -192,7 +192,7 @@ namespace Jint.Native.Object
         {
             var prop = GetOwnProperty(propertyName);
 
-            if (prop != PropertyDescriptor.Undefined)
+            if (prop != PropertyDescriptor.Undefined && prop.Value != Undefined)
             {
                 return prop;
             }
