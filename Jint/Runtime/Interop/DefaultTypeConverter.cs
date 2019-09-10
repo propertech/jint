@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -255,6 +256,15 @@ namespace Jint.Runtime.Interop
                 }
 
                 return obj;
+            }
+
+            // If object is a list, use the first item by default when a primitive is required.
+            // This allows implicit conversion of array objects to primitives, by returning the first index.
+            if (value is IList && type.IsPrimitive)
+            {
+                var list = (IList)value;
+                if (list.Count > 0)
+                    value = list[0];
             }
 
             return System.Convert.ChangeType(value, type, formatProvider);

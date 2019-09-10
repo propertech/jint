@@ -442,6 +442,14 @@ namespace Jint.Native.Object
 
             if (hint == Types.Number || hint == Types.None)
             {
+                // If object has index "0", return this value by default when a primitive is required.
+                // This allows implicit conversion of array objects to primitives, by returning the first index.
+                var firstArrayValue = Get("0");
+                if (!firstArrayValue.IsNullOrUndefined() && firstArrayValue.IsPrimitive())
+                {
+                    return firstArrayValue;
+                }
+
                 var jsValue = Get(ToPrimitiveSymbolName);
                 if (!jsValue.IsNullOrUndefined())
                 {
